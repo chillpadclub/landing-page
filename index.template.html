@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>__SITE_TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Onest:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #141b26;
+    --surface: #1a2236;
+    --border:  rgba(255,255,255,0.07);
+    --accent:  #00b87a;
+    --text:    #e8eaf0;
+    --muted:   #7a8fa8;
+    --radius:  20px;
+  }
+
+  html, body {
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Onest', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px 60px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* grid */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,184,122,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,184,122,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* glow */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -180px; left: 50%;
+    transform: translateX(-50%);
+    width: 720px; height: 520px;
+    background: radial-gradient(ellipse at 50% 30%,
+      rgba(0,184,122,0.18) 0%,
+      rgba(0,100,60,0.08) 40%,
+      transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    padding: 36px 0 44px;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .logo-img {
+    width: 68px; height: 68px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0,184,122,0.35);
+    display: block;
+    margin: 0 auto 16px;
+    box-shadow: 0 0 24px rgba(0,184,122,0.15);
+  }
+
+  .logo-text {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(22px, 6vw, 36px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff 0%, #00d68f 55%, #00b87a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .tagline {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 300;
+  }
+
+  /* ── CARDS ── */
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 440px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(22px);
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.12s; }
+  .card:nth-child(2) { animation-delay: 0.24s; }
+  .card:nth-child(3) { animation-delay: 0.36s; }
+
+  /* grid inside card */
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* top accent line */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 20%; right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--card-accent, #00b87a), transparent);
+    opacity: 0.6;
+    z-index: 1;
+  }
+
+  .card:nth-child(1) { --card-accent: #00b87a; }
+  .card:nth-child(2) { --card-accent: #00d68f; }
+  .card:nth-child(3) { --card-accent: #00e5a0; }
+
+  .card > * { position: relative; z-index: 2; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .card-icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: rgba(0,184,122,0.12);
+    border: 1px solid rgba(0,184,122,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.35;
+  }
+
+  .card-desc {
+    font-size: 14.5px;
+    color: var(--muted);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ── WARNING ── */
+  .warn {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(251,191,36,0.07);
+    border: 1px solid rgba(251,191,36,0.2);
+    font-size: 12.5px;
+    color: #f59e0b;
+    line-height: 1.5;
+  }
+  .warn svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── BUTTON ── */
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 11px;
+    font-family: 'Onest', sans-serif;
+    font-size: 13.5px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid rgba(0,184,122,0.22);
+    background: linear-gradient(135deg, rgba(0,184,122,0.16), rgba(0,184,122,0.07));
+    color: #00d68f;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  }
+  .btn:hover { box-shadow: 0 0 20px rgba(0,184,122,0.18); border-color: rgba(0,184,122,0.45); }
+  .btn:active { transform: scale(0.97); }
+  .btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  /* ── SUPPORT ROW ── */
+  .support-row {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    justify-content: center;
+    padding-top: 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .tg-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 22px;
+    border-radius: 100px;
+    background: rgba(0,184,122,0.1);
+    border: 1px solid rgba(0,184,122,0.22);
+    text-decoration: none;
+    color: #00d68f;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.15s, box-shadow 0.15s;
+  }
+  .tg-btn:hover { background: rgba(0,184,122,0.18); box-shadow: 0 0 14px rgba(0,184,122,0.18); }
+  .tg-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: #1e2a3a;
+    border: 1px solid rgba(0,184,122,0.2);
+    color: #e8eaf0;
+    font-size: 13px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    white-space: nowrap;
+    z-index: 100;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 360px) {
+    body { padding: 0 14px 50px; }
+    .card { padding: 20px 16px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img class="logo-img" src="__LOGO_SRC__" alt="">
+  <div class="logo-text">__SITE_TITLE__</div>
+  <div class="tagline">__SITE_TAGLINE__</div>
+</header>
+
+<div class="cards">
+
+    <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🤖</div>
+      <div class="card-title">__SITE_TITLE__</div>
+    </div>
+    <div class="card-desc">Подключите полноценный VPN через нашего бота прямо в Telegram.</div>
+    <a class="btn" href="__BOT_URL__" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Перейти в бот
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🛡️</div>
+      <div class="card-title">Не работает Telegram?</div>
+    </div>
+    <div class="card-desc">Подключите наш бесплатный MTProto-прокси, чтобы разблокировать Telegram.</div>
+    <div class="warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      MTProto не обходит блокировку по белым спискам
+    </div>
+    <a class="btn" href="tg://proxy?server=__PROXY_SERVER__&port=__PROXY_PORT__&secret=__PROXY_SECRET__">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Подключить прокси
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🔗</div>
+      <div class="card-title">Расскажи друзьям</div>
+    </div>
+    <div class="card-desc">Помогите друзьям и близким получить доступ к свободному интернету — поделитесь этой страницей.</div>
+    <button class="btn" onclick="handleShare()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Поделиться сайтом
+    </button>
+  </div>
+
+</div>
+
+<div class="support-row">
+  <a class="tg-btn" href="__SUPPORT_URL__" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+    Поддержка
+  </a>
+</div>
+
+<div class="toast" id="toast">Ссылка скопирована!</div>
+
+<script>
+  // Referral: /123 → BOT_URL?start=ref_123
+  (function() {
+    const path = window.location.pathname.replace(/^\/|\/$/g, '');
+    if (path) {
+      document.querySelectorAll('a[href="__BOT_URL__"]').forEach(function(a) {
+        a.href = '__BOT_URL__?start=__REF_PREFIX__' + encodeURIComponent(path);
+      });
+    }
+  })();
+
+  async function handleShare() {
+    const url = '__SHARE_URL__' || window.location.href;
+    const mode = '__SHARE_MODE__';
+
+    if (mode === 'webshare' && navigator.share) {
+      try {
+        await navigator.share({ title: '__SITE_TITLE__', url: url });
+        return;
+      } catch(e) { /* отмена */ }
+    }
+
+    // copy (default + fallback)
+    try {
+      await navigator.clipboard.writeText(url);
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    } catch(e) {}
+  }
+</script>
+</body>
+</html>

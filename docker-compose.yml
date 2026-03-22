@@ -1,0 +1,8 @@
+services:
+  landing-page:
+    build: .
+    container_name: landing-page
+    restart: unless-stopped
+#    env_file: .env
+    ports:
+      - "${HOST_PORT:-8090}:80"
